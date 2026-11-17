@@ -72,6 +72,18 @@ export const projects: Project[] = [
     // TODO: adicione o link do repositório em `repo` (ou deixe sem link se for privado).
   },
   {
+    id: 'meu-treino',
+    title: 'Meu Treino',
+    kind: 'App Android e web (PWA)',
+    status: 'concluido',
+    summary:
+      'App de treino e nutrição: registro de séries com timer de descanso automático, recordes e 1RM estimado, gráficos de progresso, biblioteca com 97 exercícios e controle de calorias e macros. Funciona offline; instala no Android (APK) e no iPhone (versão web).',
+    stack: ['JavaScript', 'HTML', 'CSS', 'PWA', 'Java · Android', 'GitHub Actions'],
+    image: '/projetos/meu-treino.jpg',
+    repo: 'https://github.com/KaykyFernandez/acompanhamento-de-treino-movel',
+    demo: 'https://kaykyfernandez.github.io/acompanhamento-de-treino-movel/',
+  },
+  {
     id: 'thermvaccine-pi',
     title: 'ThermVaccine_PI',
     kind: 'Projeto acadêmico',
@@ -86,16 +98,17 @@ export const projects: Project[] = [
   {
     id: 'karoquissimo',
     title: 'Karoquissimo',
-    kind: 'Projeto web · Full stack',
+    kind: 'Projeto em equipe · Front-end',
     status: 'concluido',
-    // TODO: complete a descrição e a stack reais e adicione o link no ar em `demo`.
+    // Repositório original: github.com/JoaovlLima/karoquissimo_frontEnd (o link abaixo é o seu fork).
+    // TODO: ajuste o texto com a sua parte exata no projeto. A demo na Vercel está fora do ar;
+    // quando voltar, coloque o link em `demo`.
     summary:
-      'Sistema web full stack de controle de estoque, com desenvolvimento e manutenção de interfaces em fluxo colaborativo via Git/GitHub.',
-    stack: ['Full stack', 'Git', 'GitHub'],
+      'Sistema web de gestão de vendas: clientes, produtos com foto, vendas parceladas e controle de parcelas, com geração de nota promissória em PDF. Feito em equipe; configurei o workflow do GitHub Actions que mantém o deploy ativo.',
+    stack: ['React', 'TypeScript', 'Tailwind CSS', 'React Query', 'Zod', 'Supabase', 'GitHub Actions'],
+    // Prints reais da interface (front rodando localmente, com dados fictícios no lugar da API).
     image: '/projetos/karoquissimo.jpg',
-    imageIsMockup: true,
-    // TODO: troque pelo link do repositório do projeto (hoje aponta para o perfil).
-    repo: 'https://github.com/KaykyFernandez',
+    repo: 'https://github.com/KaykyFernandez/karoquissimo_frontEnd',
   },
   {
     id: 'claquete',
