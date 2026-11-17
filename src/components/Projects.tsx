@@ -158,7 +158,8 @@ export function Projects() {
           </Reveal>
         )}
 
-        <div className="mt-6 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {/* 3 colunas só quando a conta fecha; com 4 cartões fica 2x2, sem cartão sobrando. */}
+        <div className={`mt-6 grid gap-6 md:grid-cols-2 ${others.length % 3 === 0 ? 'lg:grid-cols-3' : ''}`}>
           {others.map((project, i) => (
             <Reveal key={project.id} delay={i * 100}>
               <ProjectCard project={project} index={i + 1} />

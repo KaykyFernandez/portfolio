@@ -201,3 +201,16 @@ Dependências novas: `three` e `@types/three` (dev).
 | Orbe mais/menos deformado | `uAmp` (base `0.3`) em `contactOrb.ts` |
 | Posição/tamanho do orbe | classes do `<ThreeScene … className="orb-scene …">` em `Contact.tsx` |
 | Tirar uma cena | remover o `<ThreeScene>` da seção correspondente |
+
+---
+
+## 9. Projetos do GitHub adicionados (17/11/2026)
+
+| Projeto | O que mudou | Pendências |
+|---|---|---|
+| **Meu Treino** (novo) | Card com descrição, stack, link do repositório e do app no ar (GitHub Pages). Imagem `public/projetos/meu-treino.jpg` montada com **prints reais** do app (abertura, tela inicial e treino em andamento). | — |
+| **Karoquissimo** | Tipo virou "Projeto em equipe · Front-end"; stack real (lida do `package.json`); link agora vai para o seu fork `KaykyFernandez/karoquissimo_frontEnd` (antes ia para o perfil). | A demo na Vercel está fora do ar (404): quando voltar, preencher `demo`. Ajustar o texto com a sua parte exata no projeto (no fork, o único commit seu é o workflow do GitHub Actions). |
+
+- **Imagem do Karoquissimo trocada** (`public/projetos/karoquissimo.jpg`): saiu a ilustração gerada por IA (que mostrava "CodaraStock") e entraram **prints reais** do Dashboard e de Vendas. Como a API não está no ar, o front foi rodado localmente com a API simulada no navegador e **dados fictícios** (nomes, CPFs e valores inventados). O selo "Ilustração" foi removido.
+- A grade de projetos agora usa 3 colunas só quando o número de cartões é múltiplo de 3; com 4 cartões fica 2×2 (`Projects.tsx`).
+
