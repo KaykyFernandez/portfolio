@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Kayky Fernandes Garcia — Desenvolvimento de Software e Automação</title>
+    <meta
+      name="description"
+      content="Portfólio de Kayky Fernandes Garcia, estudante de Sistemas de Informação e estagiário de sistemas. Desenvolvimento de software, automação e integração de sistemas. Rio Claro, SP."
+    />
+    <meta name="theme-color" content="#0a0b1f" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Open Graph (pré-visualização no LinkedIn e no WhatsApp) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:title" content="Kayky Fernandes Garcia — Desenvolvimento de Software e Automação" />
+    <meta
+      property="og:description"
+      content="Estudante de Sistemas de Informação e estagiário de sistemas. Projetos, experiência e contato."
+    />
+    <!-- TODO: depois do deploy, adicione og:url e og:image (URL absoluta de uma imagem 1200x630). -->
+    <meta name="twitter:card" content="summary" />
+
+    <!-- Aplica o tema antes da primeira pintura para evitar flash de tema errado -->
+    <script>
+      try {
+        var t = localStorage.getItem('theme')
+        if (t !== 'light' && t !== 'dark') {
+          t = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'
+        }
+        document.documentElement.dataset.theme = t
+      } catch (e) {
+        document.documentElement.dataset.theme = 'dark'
+      }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

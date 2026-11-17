@@ -1,0 +1,669 @@
+@import "tailwindcss";
+@import "@fontsource-variable/inter";
+@import "@fontsource-variable/bricolage-grotesque";
+
+/* Tema escuro (padrão) e claro. Para trocar a cor de destaque, altere --accent* aqui. */
+:root,
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #08091a;
+  --surface: #101126;
+  --surface-2: #171937;
+  --line: #2a2c55;
+  --fg: #f2f3fb;
+  --muted: #a4a7c6;
+  --accent: #6c5ce7;
+  --accent-fg: #a99bff;
+  --accent-soft: rgb(108 92 231 / 0.16);
+  --accent-2: #4be3b5; /* toque de cor secundária: pontos de status, números */
+  --grain-opacity: 0.07;
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg: #f6f6fb;
+  --surface: #ffffff;
+  --surface-2: #eeeef8;
+  --line: #dcdcee;
+  --fg: #14152b;
+  --muted: #55587a;
+  --accent: #5b4bdb;
+  --accent-fg: #4d3fc9;
+  --accent-soft: rgb(91 75 219 / 0.1);
+  --accent-2: #0b8f6b;
+  --grain-opacity: 0.05;
+}
+
+@theme inline {
+  --font-sans: "Inter Variable", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "Bricolage Grotesque Variable", "Inter Variable", system-ui, sans-serif;
+  --color-page: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface2: var(--surface-2);
+  --color-line: var(--line);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-fg: var(--accent-fg);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent2: var(--accent-2);
+}
+
+:root {
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-io: cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Enquanto o preloader roda, a página não rola. */
+html:not([data-ready]) {
+  overflow: hidden;
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+}
+
+::selection {
+  background: var(--accent);
+  color: #fff;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent-fg);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* Grão fino sobre a página inteira: tira o aspecto "chapado" dos fundos escuros. */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  pointer-events: none;
+  opacity: var(--grain-opacity);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .9 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+/* ---------- Tipografia de exibição ---------- */
+.font-display {
+  font-variation-settings: "wdth" 85;
+}
+.display-1 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(5rem, 25vw, 19rem);
+  line-height: 0.82;
+  letter-spacing: -0.045em;
+  text-transform: uppercase;
+}
+.display-2 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(1.7rem, 7.6vw, 6.6rem);
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+}
+/* Texto "fantasma": preenchimento translúcido. (O traço -webkit-text-stroke mostrava os
+   contornos sobrepostos da fonte variável, então não é usado.) */
+.text-outline {
+  color: color-mix(in srgb, var(--fg) 26%, transparent);
+}
+.text-outline-accent {
+  color: color-mix(in srgb, var(--accent-fg) 40%, transparent);
+}
+.text-gradient {
+  background: linear-gradient(100deg, var(--accent-fg), var(--accent-2) 70%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ---------- Texto dividido (revela por letra/palavra, com máscara) ---------- */
+.sw-word {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  padding-bottom: 0.16em;
+  margin-bottom: -0.16em;
+}
+.sw-unit {
+  display: inline-block;
+  transform: translateY(112%) rotate(4deg);
+  transform-origin: 0 100%;
+  transition: transform 0.95s var(--ease-out) calc(var(--d, 0ms) + var(--i) * var(--st, 32ms));
+}
+.sw.is-in .sw-unit,
+:root[data-ready] .sw[data-trigger="ready"] .sw-unit {
+  transform: none;
+}
+
+/* ---------- Entradas ---------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.9s var(--ease-out),
+    transform 0.9s var(--ease-out);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+.rise {
+  opacity: 0;
+  transform: translateY(26px);
+}
+:root[data-ready] .rise {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 1s var(--ease-out) var(--d, 0ms),
+    transform 1s var(--ease-out) var(--d, 0ms);
+}
+
+/* Traço que se desenha ao entrar na tela */
+.line-draw {
+  height: 2px;
+  width: 100%;
+  max-width: 7rem;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 1.1s var(--ease-out) 0.35s;
+}
+.is-in > .line-draw,
+.line-draw.is-in {
+  transform: scaleX(1);
+}
+
+/* ---------- Preloader ---------- */
+.preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: clamp(1.25rem, 3vw, 2.5rem);
+  background: var(--bg);
+  color: var(--fg);
+  transition: transform 1s var(--ease-io);
+}
+.preloader.is-exit {
+  transform: translateY(-100%);
+}
+.preloader::after {
+  /* borda curva na parte de baixo, só enquanto a cortina sobe */
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  height: 12vh;
+  background: var(--bg);
+  border-radius: 0 0 50% 50% / 0 0 100% 100%;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.preloader.is-exit::after {
+  opacity: 1;
+}
+.preloader-bar {
+  height: 2px;
+  background: var(--line);
+  overflow: hidden;
+}
+.preloader-bar > i {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  transform-origin: left;
+}
+
+/* ---------- Cursor ---------- */
+.cursor-dot,
+.cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 95;
+  pointer-events: none;
+  display: none;
+  border-radius: 999px;
+}
+html.has-cursor .cursor-dot,
+html.has-cursor .cursor-ring {
+  display: block;
+}
+html.has-cursor,
+html.has-cursor a,
+html.has-cursor button {
+  cursor: none;
+}
+.cursor-dot {
+  width: 6px;
+  height: 6px;
+  margin: -3px 0 0 -3px;
+  background: var(--accent-2);
+}
+.cursor-ring {
+  width: 38px;
+  height: 38px;
+  margin: -19px 0 0 -19px;
+  border: 1.5px solid var(--accent-fg);
+  transition:
+    width 0.35s var(--ease-out),
+    height 0.35s var(--ease-out),
+    margin 0.35s var(--ease-out),
+    background-color 0.3s,
+    opacity 0.3s;
+}
+.cursor-ring[data-state="hover"] {
+  width: 68px;
+  height: 68px;
+  margin: -34px 0 0 -34px;
+  background: var(--accent-soft);
+}
+.cursor-ring[data-state="down"] {
+  width: 26px;
+  height: 26px;
+  margin: -13px 0 0 -13px;
+}
+.cursor-ring[data-state="hidden"],
+.cursor-dot[data-state="hidden"] {
+  opacity: 0;
+}
+
+/* ---------- Barra de progresso de rolagem ---------- */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  z-index: 70;
+  transform: scaleX(0);
+  transform-origin: left;
+  background: linear-gradient(90deg, var(--accent), var(--accent-fg), var(--accent-2));
+}
+
+/* ---------- Link com texto que "rola" no hover ---------- */
+.roll {
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+.roll > span {
+  display: block;
+  transition: transform 0.5s var(--ease-out);
+}
+.roll::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  transform: translateY(105%);
+  transition: transform 0.5s var(--ease-out);
+  color: var(--accent-fg);
+}
+a:hover > .roll > span,
+button:hover > .roll > span,
+.roll:hover > span {
+  transform: translateY(-105%);
+}
+a:hover > .roll::after,
+button:hover > .roll::after,
+.roll:hover::after {
+  transform: none;
+}
+
+/* ---------- Hero ---------- */
+.aurora {
+  position: absolute;
+  border-radius: 999px;
+  filter: blur(90px);
+  opacity: 0.45;
+  will-change: transform;
+}
+.aurora-a {
+  background: var(--accent);
+  animation: drift-a 18s ease-in-out infinite alternate;
+}
+.aurora-b {
+  background: var(--accent-2);
+  opacity: 0.18;
+  animation: drift-b 22s ease-in-out infinite alternate;
+}
+@keyframes drift-a {
+  to {
+    transform: translate3d(-12vw, 10vh, 0) scale(1.15);
+  }
+}
+@keyframes drift-b {
+  to {
+    transform: translate3d(14vw, -8vh, 0) scale(0.9);
+  }
+}
+.hero-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 64px 64px;
+  opacity: 0.35;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 20%, transparent 75%);
+}
+.hero-spot {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(520px circle at var(--hx, 70%) var(--hy, 30%), var(--accent-soft), transparent 65%);
+  transition: background-position 0.2s;
+}
+.status-dot {
+  position: relative;
+}
+.status-dot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: inherit;
+  animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+@keyframes ping {
+  75%,
+  100% {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+}
+.spin-slow {
+  animation: spin 22s linear infinite;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.scroll-cue {
+  position: relative;
+  width: 1px;
+  height: 56px;
+  background: var(--line);
+  overflow: hidden;
+}
+.scroll-cue::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 40%;
+  background: var(--accent-2);
+  animation: cue 1.8s var(--ease-io) infinite;
+}
+@keyframes cue {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(260%);
+  }
+}
+.caret {
+  display: inline-block;
+  width: 0.5ch;
+  height: 1em;
+  vertical-align: text-bottom;
+  background: var(--accent-2);
+  animation: blink 1.1s steps(1) infinite;
+}
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+.float {
+  animation: float 6s ease-in-out infinite;
+}
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* ---------- Cenas 3D (Three.js) ---------- */
+.three-scene {
+  opacity: 0;
+  transition: opacity 1.4s var(--ease-out);
+}
+.three-scene[data-on] {
+  opacity: 1;
+}
+/* No hero, a cena só aparece depois da abertura e substitui a grade em CSS. */
+:root:not([data-ready]) .hero-scene {
+  opacity: 0;
+}
+.hero-scene[data-on] {
+  transition-delay: 0.5s;
+}
+.hero-grid {
+  transition: opacity 1s;
+}
+.hero-bg:has(.hero-scene[data-on]) .hero-grid {
+  opacity: 0;
+}
+/* Leve vinheta no pé do hero, para a onda "sumir" antes da faixa de tecnologias. */
+.hero-scene {
+  mask-image: linear-gradient(180deg, #000 70%, transparent);
+}
+/* No celular o orbe fica no canto, atrás do título: mais discreto. */
+@media (max-width: 639px) {
+  .orb-scene[data-on] {
+    opacity: 0.6;
+  }
+}
+.globe-frame {
+  background:
+    radial-gradient(circle at 50% 45%, var(--accent-soft), transparent 62%),
+    color-mix(in srgb, var(--surface) 40%, transparent);
+}
+
+/* ---------- Marquee ---------- */
+.marquee-track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+}
+.marquee-group {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+/* ---------- Cartões com spotlight que segue o mouse ---------- */
+.spot {
+  position: relative;
+  isolation: isolate;
+  transition:
+    transform 0.5s var(--ease-out),
+    border-color 0.3s;
+  will-change: transform;
+}
+.spot::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: radial-gradient(280px circle at var(--mx, 50%) var(--my, 50%), var(--accent-fg), transparent 70%);
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.35s;
+  pointer-events: none;
+}
+.spot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), var(--accent-soft), transparent 65%);
+  opacity: 0;
+  transition: opacity 0.35s;
+  pointer-events: none;
+}
+.spot:hover::before,
+.spot:hover::after {
+  opacity: 1;
+}
+.spot.is-tilting {
+  transition:
+    transform 0.12s linear,
+    border-color 0.3s;
+}
+
+/* Placeholder animado para as capturas de tela que ainda não existem */
+.mesh {
+  position: relative;
+  overflow: hidden;
+  background: var(--surface-2);
+}
+.mesh::before,
+.mesh::after {
+  content: "";
+  position: absolute;
+  width: 70%;
+  aspect-ratio: 1;
+  border-radius: 999px;
+  filter: blur(40px);
+}
+.mesh::before {
+  background: var(--accent);
+  opacity: 0.45;
+  top: -30%;
+  left: -10%;
+  animation: drift-a 12s ease-in-out infinite alternate;
+}
+.mesh::after {
+  background: var(--accent-2);
+  opacity: 0.22;
+  bottom: -40%;
+  right: -10%;
+  animation: drift-b 14s ease-in-out infinite alternate;
+}
+
+/* ---------- Chips ---------- */
+.chip {
+  transition:
+    transform 0.4s var(--ease-out),
+    background-color 0.25s,
+    border-color 0.25s,
+    color 0.25s;
+}
+.chip:hover {
+  transform: translateY(-3px);
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+/* ---------- Timeline ---------- */
+.tl-fill {
+  transform: scaleY(var(--p, 0));
+  transform-origin: top;
+  background: linear-gradient(180deg, var(--accent), var(--accent-2));
+}
+.tl-dot {
+  transition:
+    transform 0.6s var(--ease-out),
+    background-color 0.4s,
+    box-shadow 0.6s;
+}
+.tl-dot:not(.is-on) {
+  transform: scale(0.6);
+  background: var(--line);
+}
+.tl-dot.is-on {
+  box-shadow: 0 0 0 6px var(--accent-soft);
+}
+
+/* ---------- Contato ---------- */
+.big-link {
+  background-image: linear-gradient(var(--accent-fg), var(--accent-fg));
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 3px;
+  transition:
+    background-size 0.6s var(--ease-out),
+    color 0.3s;
+}
+.big-link:hover {
+  background-size: 100% 3px;
+  color: var(--accent-fg);
+}
+
+/* ---------- Rodapé ---------- */
+.footer-word {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(5rem, 27vw, 22rem);
+  line-height: 0.74;
+  letter-spacing: -0.05em;
+  text-transform: uppercase;
+  user-select: none;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--accent-fg) 38%, transparent), transparent 85%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ---------- Movimento reduzido ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .reveal,
+  .rise,
+  .sw-unit {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .line-draw {
+    transform: none;
+    transition: none;
+  }
+  .float,
+  .spin-slow,
+  .aurora,
+  .mesh::before,
+  .mesh::after,
+  .status-dot::after,
+  .scroll-cue::after,
+  .caret {
+    animation: none;
+  }
+  * {
+    transition-duration: 0.01ms !important;
+  }
+}
